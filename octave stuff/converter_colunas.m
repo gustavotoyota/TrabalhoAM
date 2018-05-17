@@ -56,6 +56,8 @@ function [X, y] = converter_colunas(colunas_texto)
       y(i) = 0;
     end
   end
+  
+  save("-binary", "dados.mat", "X", "y");
 	
 	printf("Conversão para valores numéricos finalizada.\n");
 end  
