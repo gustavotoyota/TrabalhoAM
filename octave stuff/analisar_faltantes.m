@@ -1,4 +1,4 @@
-function [faltantes_linhas, faltantes_colunas] = analise_faltantes(X)
+function [faltantes_linhas, faltantes_colunas] = analisar_faltantes(X)
   if isempty(colunas_texto)
     load("-binary", "converter_colunas", "X");
   end
