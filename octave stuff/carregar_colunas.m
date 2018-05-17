@@ -5,5 +5,5 @@ function colunas = carregar_colunas(arquivo_csv)
 	colunas = cell(1, num_colunas);
 	[colunas{:}] = textread(arquivo_csv, repmat('%s', [1, num_colunas]), 'Delimiter', ',');
   
-  save("-binary", "dados.mat", "colunas");
+  save("-binary", "carregar_colunas.mat", "colunas");
 end

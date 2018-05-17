@@ -1,6 +1,6 @@
 function [X, y] = converter_colunas(colunas_texto)  
   if isempty(colunas_texto)
-    [colunas_texto] = load("-binary", "dados.mat", "colunas_texto");
+    [colunas_texto] = load("-binary", "carregar_colunas.mat", "colunas_texto");
   end
   
 	num_colunas = size(colunas_texto, 2);
@@ -57,7 +57,7 @@ function [X, y] = converter_colunas(colunas_texto)
     end
   end
   
-  save("-binary", "dados.mat", "X", "y");
+  save("-binary", "converter_colunas.mat", "X", "y");
 	
 	printf("Conversão para valores numéricos finalizada.\n");
 end  
