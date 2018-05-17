@@ -7,7 +7,7 @@ function [X, y] = converter_colunas(colunas_texto)
   num_linhas = size(colunas_texto{1}, 1);
   
   # Convertendo atributos
-	printf("Convertendo atributos para valores numï¿½ricos.\n");
+	printf("Convertendo atributos para valores numéricos.\n");
   
   num_atributos = num_colunas - 1;
   
@@ -20,7 +20,7 @@ function [X, y] = converter_colunas(colunas_texto)
     
 		printf("- Convertendo atributo %d.", atributo);
 		
-		if atributo > 1
+		if i > 2
 			tempo_restante = (time() - tempo_inicial) * (num_atributos - atributo) / atributo;
 			printf(" Tempo restante estimado: %.2f segundos.", tempo_restante);
 		end
@@ -40,10 +40,10 @@ function [X, y] = converter_colunas(colunas_texto)
 		end
 	end
   
-  # Convertendo saï¿½das
-	printf("Convertendo saï¿½das para valores numï¿½ricos.\n");
+  # Convertendo saídas
+	printf("Convertendo saídas para valores numéricos.\n");
   
-  y = zeros(num_linhas);
+  y = zeros(num_linhas, 1);
   
   coluna_texto = colunas_texto{1};
   
@@ -59,5 +59,5 @@ function [X, y] = converter_colunas(colunas_texto)
   
   save("-binary", "converter_colunas.mat", "X", "y");
 	
-	printf("Conversï¿½o para valores numï¿½ricos finalizada.\n");
+	printf("Conversão para valores numéricos finalizada.\n");
 end  
