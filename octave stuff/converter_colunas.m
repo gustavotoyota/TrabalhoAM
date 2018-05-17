@@ -1,6 +1,6 @@
 function [X, y] = converter_colunas(colunas_texto)  
   if isempty(colunas_texto)
-    [colunas_texto] = load("-binary", "carregar_colunas.mat", "colunas_texto");
+    load("-binary", "carregar_colunas.mat", "colunas_texto");
   end
   
 	num_colunas = size(colunas_texto, 2);
