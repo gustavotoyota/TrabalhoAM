@@ -20,7 +20,7 @@ function [X, y] = converter_colunas(colunas_texto)
     
 		printf("- Convertendo atributo %d.", atributo);
 		
-		if i > 2
+		if atributo > 1
 			tempo_restante = (time() - tempo_inicial) * (num_atributos - atributo) / atributo;
 			printf(" Tempo restante estimado: %.2f segundos.", tempo_restante);
 		end
