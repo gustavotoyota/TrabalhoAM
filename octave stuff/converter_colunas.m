@@ -9,7 +9,7 @@ function [X, y] = converter_colunas(colunas_texto)
   num_linhas = size(colunas_texto{1}, 1);
   
   # Convertendo atributos
-	printf("Convertendo atributos para valores num�ricos.\n");
+	printf("- Convertendo atributos para valores num�ricos.\n");
   
   num_atributos = num_colunas - 1;
   
@@ -22,7 +22,7 @@ function [X, y] = converter_colunas(colunas_texto)
 	tempo_anterior = time();
 	
 	for atributo = 1 : num_atributos
-		printf("- Convertendo atributo %d.", atributo);
+		printf("  - Convertendo atributo %d.", atributo);
     
 		coluna_texto = colunas_texto{atributo + 1};
 		
