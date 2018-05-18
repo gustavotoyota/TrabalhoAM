@@ -18,5 +18,5 @@ function [faltantes_linhas, faltantes_colunas] = analisar_faltantes(X)
     end  
   end  
   
-  save("-binary", "analise_faltantes.mat", "faltantes_linhas", "faltantes_colunas");
+  save("-binary", "analisar_faltantes.mat", "faltantes_linhas", "faltantes_colunas");
 end
