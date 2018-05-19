@@ -1,15 +1,16 @@
 function mediana = calcular_mediana_coluna(valores)
+  tamanho = prod(size(valores)) - inicio + 1;
+  
   # Ordenar valores
   valores = sort(valores);
   
   # Encontrar primeiro valor positivo
   inicio = 1;
-  while valores(inicio) < 0
+  while valores(inicio) < 0 && inicio <= tamanho
     inicio = inicio + 1;
   end
   
   # Calcular mediana
-  tamanho = size(valores, 1) - inicio + 1;
   if mod(tamanho, 2) == 0
     mediana = valores(tamanho / 2);
   else
