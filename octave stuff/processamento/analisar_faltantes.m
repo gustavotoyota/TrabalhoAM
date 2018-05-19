@@ -2,7 +2,7 @@ function [faltantes_linhas, faltantes_colunas] = analisar_faltantes(X)
   printf("Analisando dados faltantes.\n");
   
   if isempty(X)
-    load("-binary", "converter_colunas.mat", "X");
+    load("-binary", "preprocessamento/converter_colunas.mat", "X");
   end
   
   num_linhas = size(X, 1);
@@ -41,5 +41,5 @@ function [faltantes_linhas, faltantes_colunas] = analisar_faltantes(X)
     printf(" Tempo restante estimado: %.2f segundos.\n", tempo_restante);
   end  
   
-  save("-binary", "analisar_faltantes.mat", "faltantes_linhas", "faltantes_colunas");
+  save("-binary", "preprocessamento/analisar_faltantes.mat", "faltantes_linhas", "faltantes_colunas");
 end

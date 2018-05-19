@@ -2,7 +2,7 @@ function [X, y] = converter_colunas(colunas_texto)
 	printf("Convertendo colunas para valores num�ricos.\n");
   
   if isempty(colunas_texto)
-    load("-binary", "carregar_colunas.mat", "colunas_texto");
+    load("-binary", "preprocessamento/carregar_colunas.mat", "colunas_texto");
   end
   
 	num_colunas = size(colunas_texto, 2);
@@ -67,5 +67,5 @@ function [X, y] = converter_colunas(colunas_texto)
     end
   end
   
-  save("-binary", "converter_colunas.mat", "X", "y");
+  save("-binary", "preprocessamento/converter_colunas.mat", "X", "y");
 end  

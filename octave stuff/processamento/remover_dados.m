@@ -3,10 +3,10 @@ function [X, y, colunas_removidas] = remover_dados(X, y, faltantes_linhas, falta
   
   # Carregar inputs
   if isempty(X)
-    load("-binary", "converter_colunas.mat", "X", "y");
+    load("-binary", "preprocessamento/converter_colunas.mat", "X", "y");
   end
   if isempty(faltantes_linhas)
-    load("-binary", "analisar_faltantes.mat", "faltantes_linhas", "faltantes_colunas");
+    load("-binary", "preprocessamento/analisar_faltantes.mat", "faltantes_linhas", "faltantes_colunas");
   end
   
   num_linhas = size(X, 1);
@@ -62,5 +62,5 @@ function [X, y, colunas_removidas] = remover_dados(X, y, faltantes_linhas, falta
   end
   
   # Salvar outputs
-  save("-binary", "remover_dados.mat", "X", "y", "colunas_removidas");
+  save("-binary", "preprocessamento/remover_dados.mat", "X", "y", "colunas_removidas");
 end  

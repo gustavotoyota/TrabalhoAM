@@ -3,7 +3,7 @@ function X = normalizar_dados(X)
   
   # Carregar inputs
   if isempty(X)
-    load("-binary", "preencher_faltantes.mat", "X");
+    load("-binary", "preprocessamento/preencher_faltantes.mat", "X");
   end
   
   num_linhas = size(X, 1);
@@ -18,10 +18,10 @@ function X = normalizar_dados(X)
   for coluna = 1 : num_colunas
     printf("- Normalizando coluna %d.", coluna);
     
-    # Calcular média
+    # Calcular mï¿½dia
     media = calcular_media(X(:, coluna));
     
-    # Calcular desvio padrão
+    # Calcular desvio padrï¿½o
     desvio_padrao = calcular_desvio_padrao(X(:, coluna), media);
     
     # Normalizar coluna
@@ -44,5 +44,5 @@ function X = normalizar_dados(X)
   end
   
   # Salvar outputs
-  save("-binary", "normalizar_dados.mat", "X");
+  save("-binary", "preprocessamento/normalizar_dados.mat", "X");
 end

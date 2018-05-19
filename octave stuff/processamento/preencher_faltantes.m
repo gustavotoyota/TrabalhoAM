@@ -3,7 +3,7 @@ function [X] = preencher_faltantes(X)
   
   # Carregar inputs
   if isempty(X)
-    load("-binary", "remover_dados.mat", "X");
+    load("-binary", "preprocessamento/remover_dados.mat", "X");
   end
   
   num_linhas = size(X, 1);
@@ -43,5 +43,5 @@ function [X] = preencher_faltantes(X)
   end    
   
   # Salvar outputs
-  save("-binary", "preencher_faltantes.mat", "X");
+  save("-binary", "preprocessamento/preencher_faltantes.mat", "X");
 end  
