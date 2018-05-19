@@ -1,4 +1,4 @@
-function colunas_texto = carregar_colunas(arquivo_csv)
+function [colunas_texto] = carregar_colunas(arquivo_csv)
   printf("Carregando colunas da base de dados.\n", i);
   
   num_colunas = 171;
