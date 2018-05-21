@@ -18,7 +18,9 @@ function [faltantes_linhas, faltantes_colunas] = analisar_faltantes(X)
 	tempo_anterior = time();
   
   for linha = 1 : num_linhas
-    printf("Analisando linha %d.", linha);
+    if mod(linha, 500) == 0
+      printf("Analisando linha %d.", linha);
+    end  
     
     for coluna = 1 : num_colunas
       if X(linha, coluna) < 0
@@ -38,7 +40,9 @@ function [faltantes_linhas, faltantes_colunas] = analisar_faltantes(X)
     numero_duracao = numero_duracao + 1;
     tempo_anterior = tempo_atual;
     
-    printf(" Tempo restante estimado: %.2f segundos.\n", tempo_restante);
+    if mod(linha, 500) == 0
+      printf(" Tempo restante estimado: %.2f segundos.\n", tempo_restante);
+    end
   end  
   
   save("-binary", "preprocessamento/analisar_faltantes.mat", "faltantes_linhas", "faltantes_colunas");
