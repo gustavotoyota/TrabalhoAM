@@ -1,22 +1,15 @@
-function mediana = calcular_mediana_coluna(valores)
-  tamanho = prod(size(valores)) - inicio + 1;
+function mediana = calcular_mediana(valores)
+  qtd_valores = prod(size(valores));
   
   # Ordenar valores
   valores = sort(valores);
   
-  # Encontrar primeiro valor positivo
-  inicio = 1;
-  while valores(inicio) < 0 && inicio <= tamanho
-    inicio = inicio + 1;
-  end
-  
   # Calcular mediana
-  if mod(tamanho, 2) == 0
-    mediana = valores(tamanho / 2);
-  else
-    esquerdo = valores((tamanho - 1) / 2);
-    direito = valores((tamanho + 1) / 2);
-    
+  if mod(qtd_valores, 2) == 0
+    esquerdo = valores(qtd_valores / 2);
+    direito = valores(qtd_valores / 2 + 1);
     mediana = (esquerdo + direito) / 2;
+  else
+    mediana = valores((qtd_valores + 1) / 2);
   end
 end  
