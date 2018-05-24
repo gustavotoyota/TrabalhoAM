@@ -14,7 +14,7 @@ function [X, y] = remover_dados(X, y, threshold_colunas, threshold_linhas)
   threshold_colunas_qtd = threshold_colunas * num_linhas / 100;
   
   # Remover colunas
-  printf("- Removendo colunas (Threshold: %.2f%% de faltantes).\n", threshold_colunas);
+  printf("- Removendo colunas (Threshold de faltantes: %.2f%%).\n", threshold_colunas);
   
   matriz_faltantes = X < 0;
   faltantes_colunas = sum(matriz_faltantes, 1);
@@ -22,7 +22,7 @@ function [X, y] = remover_dados(X, y, threshold_colunas, threshold_linhas)
   X(:, colunas_removidas) = [];
   
   # Remover linhas
-  printf("- Removendo linhas (Threshold: %.2f%% de faltantes).\n", threshold_linhas);
+  printf("- Removendo linhas (Threshold de faltantes: %.2f%%).\n", threshold_linhas);
   
   matriz_faltantes = X < 0;
   faltantes_linhas = sum(matriz_faltantes, 2);
