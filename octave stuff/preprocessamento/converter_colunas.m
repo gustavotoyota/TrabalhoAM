@@ -1,6 +1,7 @@
 function [X, y] = converter_colunas(colunas_texto)  
-	printf("Convertendo colunas para valores num�ricos.\n");
+	printf("Convertendo colunas para valores numericos.\n");
   
+  # Carregar inputs
   if isempty(colunas_texto)
     load("-binary", "preprocessamento/carregar_colunas.mat", "colunas_texto");
   end
@@ -8,8 +9,8 @@ function [X, y] = converter_colunas(colunas_texto)
 	num_colunas = size(colunas_texto, 2);
   num_linhas = size(colunas_texto{1}, 1);
   
-  # Convertendo atributos
-	printf("- Convertendo atributos para valores num�ricos.\n");
+  # Converter atributos
+	printf("- Convertendo atributos para matriz numerica.\n");
   
   num_atributos = num_colunas - 1;
   
@@ -50,8 +51,8 @@ function [X, y] = converter_colunas(colunas_texto)
     printf(" Tempo restante estimado: %.2f segundos.\n", tempo_restante);
 	end
   
-  # Convertendo sa�das
-	printf("Convertendo sa�das para valores num�ricos.\n");
+  # Converter saidas
+	printf("- Convertendo saidas para valores numericos.\n");
   
   y = zeros(num_linhas, 1);
   
@@ -67,5 +68,6 @@ function [X, y] = converter_colunas(colunas_texto)
     end
   end
   
+  # Salvar outputs
   save("-binary", "preprocessamento/converter_colunas.mat", "X", "y");
 end  
