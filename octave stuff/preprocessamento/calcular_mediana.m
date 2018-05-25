@@ -1,10 +1,10 @@
 function mediana = calcular_mediana(valores)
   qtd_valores = prod(size(valores));
   
-  # Ordenar valores
+  % Ordenar valores
   valores = sort(valores);
   
-  # Calcular mediana
+  % Calcular mediana
   if mod(qtd_valores, 2) == 0
     esquerdo = valores(qtd_valores / 2);
     direito = valores(qtd_valores / 2 + 1);

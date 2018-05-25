@@ -1,0 +1,2 @@
+function rede_neural_prever(rede_neural)
+end
