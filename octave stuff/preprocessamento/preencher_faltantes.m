@@ -3,7 +3,7 @@ function [X] = preencher_faltantes(X)
   
   % Carregar inputs
   if isempty(X)
-    load('preprocessamento/remover_dados.mat', 'X', '-mat');
+    load('preprocessamento/balancear_classes.mat', 'X', '-mat');
   end
   
   % Preencher faltantes
@@ -13,7 +13,7 @@ function [X] = preencher_faltantes(X)
     coluna = X(:, indice_coluna);
     
     % Calcular mediana
-    mediana = calcular_mediana(coluna(coluna >= 0));
+    mediana = calcular_percentil(coluna(coluna >= 0), 50);
     
     % Preencher faltantes com a mediana
     indices_faltantes = find(coluna < 0);
