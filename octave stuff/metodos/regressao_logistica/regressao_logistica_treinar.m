@@ -2,20 +2,28 @@
 
 % ENTRADA
 %          X = [MxN] amostras de treinamento
-%          Y = [Mx1] rotulos das amostras de treinamento
-%      alpha = [1x1] taxa de aprendizado
-%     lambda = [1x1] parametro de regularizacao
-%   max_iter = [1x1] numero de iteracoes
+%          y = [Mx1] rotulos das amostras de treinamento
+%     opcoes = estrutura contendo:
+%            alpha = [1x1] taxa de aprendizado
+%           lambda = [1x1] parametro de regularizacao
+%         max_iter = [1x1] numero de iteracoes
 
 % SAIDA
-%   theta = [Nx1] thetas treinados
+%   clf = estrutura contendo:
+%       historico = [max_iterx1] historico dos valores da funcao custo
+%          thetas = [Nx1] thetas treinados
 
-function [J, theta] = regressao_logistica_treinar(X, y, alpha, lambda, max_iter)
-	% Define funcao sigmoid
+function clf = regressao_logistica_treinar(X, y, opcoes)	
+  % Le a struct opcoes preenchedo com valores padrao caso esteja vazia
+  alpha = eval("opcoes.alpha", "1");
+  lambda = eval("opcoes.lambda", "1");
+  max_iter = eval("opcoes.max_iter", "1000");
+  
+  % Define funcao sigmoid
 	sigmoid = @(z) 1 ./ (1 + exp(-z));
 
 	% Inicializa o historico da funcao custo
-	J = zeros(max_iter,1);
+	J_historico = zeros(max_iter,1);
 
 	% Armazena o numero de amostras
 	m = length(y);
@@ -26,16 +34,24 @@ function [J, theta] = regressao_logistica_treinar(X, y, alpha, lambda, max_iter)
 	% Inicializa theta randomicamente
 	theta = rand(size(X)(2),1);
 
-	for iter = 1:max_iter  
-	  theta = theta - alpha*((sum((sigmoid(X*theta)-y).*X)/m)' + (lambda/m)*theta);
-	  theta(1) = theta(1) - alpha*(sum((sigmoid(X*theta)-y).*X(:,1))/m);
+  % Faz o passo do gradiente descendente max_iter vezes 
+	for iter = 1:max_iter      
+    % Calcula o novo theta regularizado
+	  theta = theta - alpha * ((sum((sigmoid(X * theta) - y) .* X) / m)' + (lambda / m) * theta);
+	  theta(1) = theta(1) - alpha * (sum((sigmoid(X * theta) - y) .* X(:,1)) / m);
        	    
-	  J(iter) = sum(-y.*log(sigmoid(X*theta)+1e-15)-(1-y).*log(1-sigmoid(X*theta)+1e-15))/m + lambda/(2*m) * sum(theta(2:end).^2);	     
-    fprintf("%f\n", J(iter));
-    
-	  if iter > 1 && J(iter-1) == J(iter)
-	    J = J(1:end-iter,:);
+    % Armazena o custo regularizado
+	  J_historico(iter) = sum(-y .* log(sigmoid(X * theta) + eps) - (1 - y) .* log(1 - sigmoid(X * theta) + eps)) / m + lambda / (2 * m) * sum(theta(2:end) .^ 2);    
+    fprintf("%f\n", J_historico(iter));
+        
+    % Verifica se convergiu e encerra metodo caso afirmativo
+	  if iter > 1 && J_historico(iter-1) == J_historico(iter)
+	    J_historico = J_historico(1:end-iter,:);
 	    break
 	  end
 	end
+  
+  % Monta retorno
+  clf.historico = J_historico;
+  clf.thetas = theta;
 end
