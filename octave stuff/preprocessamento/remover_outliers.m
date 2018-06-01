@@ -30,7 +30,7 @@ function X = remover_outliers(X)
     
     % Transformar outliers para dados faltantes
     indices_outliers = [find(coluna < limites_inferiores(indice_coluna)); find(coluna > limites_superiores(indice_coluna))];
-    X(indices_outliers, indice_coluna) = -1;    
+    X(indices_outliers, indice_coluna) = -1;
   end
   
   % Salvar outputs

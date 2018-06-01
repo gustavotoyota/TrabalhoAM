@@ -13,13 +13,13 @@ function [X] = preencher_faltantes(X)
     coluna = X(:, indice_coluna);
     
     % Calcular mediana
-    mediana = calcular_percentil(coluna(coluna >= 0), 50);
+    medianas(indice_coluna) = calcular_percentil(coluna(coluna >= 0), 50);
     
     % Preencher faltantes com a mediana
     indices_faltantes = find(coluna < 0);
-    X(indices_faltantes, indice_coluna) = mediana;
+    X(indices_faltantes, indice_coluna) = medianas(indice_coluna);
   end    
   
   % Salvar outputs
-  save('preprocessamento/preencher_faltantes.mat', 'X', '-mat');
+  save('preprocessamento/preencher_faltantes.mat', 'X', 'medianas', '-mat');
 end  

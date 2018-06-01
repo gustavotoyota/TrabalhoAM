@@ -21,8 +21,6 @@ model = svmtrain(Y, X);
 %testa o modelo com os dados de teste e retorna um vetor das predicoes e acuracia
 [predicted_labels, accuracy, dec_values] = svmpredict(B, A, model);
 
-%para escrever os dados em formato libsvm:
-%libsvmwrite('base_treino.lbsvm', Y, X);
-%libsvmwrite('base_teste.lbsvm', B, A);
+%svmstats(base_teste_label, predicted_labels);
 
 end
