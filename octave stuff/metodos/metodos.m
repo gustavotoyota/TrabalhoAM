@@ -1,4 +1,4 @@
-function metodos(X, y)
+function metodos(X, y, A, b)
   addpath("metodos/k_vizinhos");
   addpath("metodos/regressao_logistica");
   addpath("metodos/rede_neural");

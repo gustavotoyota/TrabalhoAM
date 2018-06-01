@@ -8,4 +8,4 @@ more off;
 %[A, b] = preprocessamento_test('aps_failure_test_set.csv');
 
 addpath('metodos');
-metodos(eval('X', '[]'), eval('y', '[]'));
+metodos(eval('X', '[]'), eval('y', '[]'), eval('A', '[]'), eval('b', '[]'));
