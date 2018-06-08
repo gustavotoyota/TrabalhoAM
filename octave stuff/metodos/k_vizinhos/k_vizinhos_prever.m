@@ -2,34 +2,48 @@
 %   utilizando Distancia Euclidiana
 
 % ENTRADA
-%   x = [AxN] amostras a serem classificadas
-%   X = [MxN] amostras de treinamento
-%   Y = [Mx1] rotulos das amostras de treinamento
-%   K = [1x1] qtde de vizinhos consultados
-%   P = [1x1] real variando em [0,1] indicando a porcentagem P que a classe 
+%   x = [AxN] amostras a serem rotuladas
+%   clf = estrutura contendo:
+%     vizinhos = [MxN+1] rotulos e dados dos vizinhos
+%     k = [1x1] qtde de vizinhos consultados
+%     p = [1x1] real variando em [0,1] indicando a porcentagem P que a classe 
 %             positiva precisa ocorrer para ser o resultado da classificacao.
 %             P = 0.5 indica que a que ocorrer com mais freq sera o resultado
+%    dist = [1x1] 1 ou 2 indicando distancia de manhattan ou euclidiana respectivamente
 
 % SAIDA
-%   y = [Ax1] predicao 0 ou 1 do rotulo das amostras x
+%   pred = [Ax1] predicao 0 ou 1 do rotulo das amostras x
 
-function [vizs, y] = knn_prever(x, X, Y, K, P)
+function pred = k_vizinhos_prever(x, clf)
+  % Le a base de vizinhos e os parametros do metodo
+  vizinhos = eval("clf.vizinhos", "NaN");
+  k = eval("clf.k", "NaN");
+  p = eval("clf.p", "NaN");
+  dist = eval("clf.dist", "NaN");
 
-vizs = zeros(length(X),K);
-
-% Inicializa variaveis
-y = zeros(size(x,1),1);
-
-% Percorre cada uma das amostras
-for a = 1:size(x,1)  
-  % Calcula as distancias de x(a) para todas amostras de X
-  dist = sqrt(sum(x(a,:)-X,2).^2);
-
-  % Captura o rotulo dos K vizinhos mais proximos
-  [proximos, indices] = sort(dist);
-  vizinhos = Y(indices(1:K));  
-  vizs(a,:) = vizinhos';
+  % Separa X e y
+  y = vizinhos(:,1);
+  X = vizinhos(:,2:end);
   
-  % Prediz o rotulo de x(a)
-  y(a) = sum(vizinhos)/length(vizinhos) >= P;
+	% Inicializa variaveis
+	pred = zeros(size(x,1),1);
+
+	% Percorre cada uma das amostras
+	for amostra = 1:size(x,1)
+	  % Calcula as distancias de x(a) para todas amostras de X de acordo com a medida adotada
+    if (dist == 1)
+      % Manhattan
+      distancias = sum(abs(x(amostra,:) - X), 2);
+    else
+      % Euclidiana
+	    distancias = sqrt(sum(x(amostra,:) - X, 2) .^ 2);
+    end  
+
+	  % Captura o rotulo dos K vizinhos mais proximos
+	  [proximos, indices] = sort(distancias);
+	  vizinhos = y(indices(1:k));
+	  
+	  % Prediz o rotulo de x(a)
+	  pred(amostra) = sum(vizinhos)/length(vizinhos) >= p;
+	end
 end
