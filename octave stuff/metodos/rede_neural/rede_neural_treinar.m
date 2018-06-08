@@ -4,9 +4,10 @@
 %          X = [MxN] amostras de treinamento
 %          y = [Mx1] rotulos das amostras de treinamento
 %     opcoes = estrutura contendo:
-%        tam_hidden_layer = [1x1] numero de neuronios da camada intermediaria
-%                max_iter = [1x1] numero de iteracoes da rede
-%        taxa_aprendizado = [1x1] taxa de aprendizado
+%             tam_hidden_layer = [1x1] numero de neuronios da camada intermediaria
+%                     max_iter = [1x1] numero de iteracoes da rede
+%             taxa_aprendizado = [1x1] taxa de aprendizado
+%        proporcao_influencias = [1x1] proporcao das influencias das classes no gradiente
 
 % SAIDA
 %   clf = estrutura contendo:
@@ -31,6 +32,7 @@ function clf = rede_neural_treinar(X, y, opcoes)
   tam_hidden_layer = eval('opcoes.tam_hidden_layer', '10');
   max_iter = eval('opcoes.max_iter', '100');
   taxa_aprendizado = eval('opcoes.taxa_aprendizado', '0.01');
+  proporcao_influencias = eval('opcoes.proporcao_influencias', '0.5');
   
   % Modificar y para classificacao com softmax
   y(:, 2) = y;
@@ -86,7 +88,9 @@ function clf = rede_neural_treinar(X, y, opcoes)
     % --- Obter a media da influencia dos pesos 2 sobre os custos das duas classes
     grad_total_pesos2_neg = (deriv_custos_inputs(pos_y_neg, :)' *deriv_inputs_pesos(pos_y_neg, :))';
     grad_total_pesos2_pos = (deriv_custos_inputs(pos_y_pos, :)' * deriv_inputs_pesos(pos_y_pos, :))';
-    grad_medio_pesos2 = (grad_total_pesos2_neg ./ qtd_y_neg + grad_total_pesos2_pos ./ qtd_y_pos) ./ 2;
+    grad_medio_pesos2_neg = grad_total_pesos2_neg ./ qtd_y_neg;
+    grad_medio_pesos2_pos = grad_total_pesos2_pos ./ qtd_y_pos;
+    grad_medio_pesos2 = (1 - proporcao_influencias) .* grad_medio_pesos2_neg + proporcao_influencias .* grad_medio_pesos2_pos;
     
     % - Hidden layer
     % --- Calcular as derivadas parciais dos custos ate os pesos 1
@@ -98,7 +102,9 @@ function clf = rede_neural_treinar(X, y, opcoes)
     % --- Obter a media da influencia dos pesos 1 sobre os custos das duas classes
     grad_total_pesos1_neg = (deriv_custos_inputs(pos_y_neg, :)' * deriv_inputs_pesos(pos_y_neg, :))';
     grad_total_pesos1_pos = (deriv_custos_inputs(pos_y_pos, :)' * deriv_inputs_pesos(pos_y_pos, :))';
-    grad_medio_pesos1 = (grad_total_pesos1_neg ./ qtd_y_neg + grad_total_pesos1_pos ./ qtd_y_pos) ./ 2;
+    grad_medio_pesos1_neg = grad_total_pesos1_neg ./ qtd_y_neg;
+    grad_medio_pesos1_pos = grad_total_pesos1_pos ./ qtd_y_pos;
+    grad_medio_pesos1 = (1 - proporcao_influencias) .* grad_medio_pesos1_neg + proporcao_influencias .* grad_medio_pesos1_pos;
       
     % - Aplicar o negativo do gradiente aos pesos, controlado pela taxa de aprendizado
     clf.pesos2 -= grad_medio_pesos2 .* taxa_aprendizado;

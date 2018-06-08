@@ -23,6 +23,7 @@ function metodos(X, y, A, b)
   params_rna.tam_hidden_layer = [100];
   params_rna.max_iter = [1];
   params_rna.taxa_aprendizado = [0.1];
+  params_rna.proporcao_influencias = [0.5];
     
   % Chama o grid_search para cada metodo
   [best_params_knn, clf_knn] = grid_search(X, y, "k_vizinhos", train_split, test_split, params_knn);
