@@ -12,22 +12,31 @@
 
 function pred = rede_neural_prever(x, clf)
   % Funcoes de ativacao
-  leaky_relu = @(input) (input < 0) .* 0.01 .* input + (input >= 0) .* input;
-  softmax = @(input) exp(input - max(input, [], 2)) ./ sum(exp(input - max(input, [], 2)), 2);
+  relu = @(inputs) max(0, inputs);
+  deriv_relu = @(inputs, outputs) double(inputs > 0);
   
-  % Adicionar bias ao X
+  leaky_relu = @(inputs) (inputs < 0) .* 0.01 .* inputs + (inputs >= 0) .* inputs;
+  deriv_leaky_relu = @(inputs, outputs) (inputs < 0) .* 0.01 + (inputs >= 0) .* 1;
+  
+  sigmoid = @(inputs) 1 ./ (1 + exp(-inputs));
+  deriv_sigmoid = @(inputs, outputs) outputs .* (1 - outputs);
+  
+  % Auxiliares
+  num_testes = size(x, 1);
+    
+  % Adicionar bias ao x
   x(:, end + 1) = 1;
   
   % Feedforward
   % - Hidden layer
-  inputs_hidden_layer = x * clf.pesos1;
-  outputs_hidden_layer = leaky_relu(inputs_hidden_layer);
-  
+  inputs_hidden_layer = x * clf.pesos1; % Multiplicar pelos pesos
+  outputs_hidden_layer = leaky_relu(inputs_hidden_layer); % Aplicar sigmoid aos inputs
+
   % - Output layer
-  outputs_hidden_layer(:, end + 1) = 1;
-  inputs_output_layer = outputs_hidden_layer * clf.pesos2;
-  outputs_output_layer = softmax(inputs_output_layer);
+  outputs_hidden_layer_bias = [outputs_hidden_layer ones(num_testes, 1)]; % Outputs anteriores com bias
+  inputs_output_layer = outputs_hidden_layer_bias * clf.pesos2; % Multiplicar pelos pesos
+  outputs_output_layer = sigmoid(inputs_output_layer); % Aplicar sigmoid aos inputs
   
   % Realiza a predicao
-  pred = round(outputs_output_layer(:,2));
+  pred = outputs_output_layer;
 endfunction
