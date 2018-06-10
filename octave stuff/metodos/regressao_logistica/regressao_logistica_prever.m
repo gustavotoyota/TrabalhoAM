@@ -1,7 +1,7 @@
 % Método Regressao Logistica por gradiente descendente para predizer amostras
 
 % ENTRADA
-%     x = [MxN] amostras de treinamento
+%     x = [MxN] amostras a serem rotuladas
 %   clf = estrutura contendo:
 %       historico = [max_iterx1] historico dos valores da funcao custo
 %          thetas = [Nx1] thetas treinados         
@@ -15,7 +15,10 @@ function pred = regressao_logistica_prever(x, clf)
   
   % Le os thetas
   theta = eval("clf.thetas", "NaN");
+  
+  % Le a penalidade
+  p = eval("clf.p", "NaN");
     
   % Calcula as predicoes  
-  pred = round([ones(size(x)(1),1) x] * theta);
+  pred = sigmoid([ones(size(x)(1),1) x] * theta) > p;
 end

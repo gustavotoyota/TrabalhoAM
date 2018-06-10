@@ -18,6 +18,7 @@ function clf = regressao_logistica_treinar(X, y, opcoes)
   alpha = eval("opcoes.alpha", "1");
   lambda = eval("opcoes.lambda", "1");
   max_iter = eval("opcoes.max_iter", "1000");
+  p = eval("opcoes.p", "0.5");
   
   % Define funcao sigmoid
 	sigmoid = @(z) 1 ./ (1 + exp(-z));
@@ -28,7 +29,10 @@ function clf = regressao_logistica_treinar(X, y, opcoes)
 	% Armazena o numero de amostras
 	m = length(y);
 
-	% Adiciona coluna de vies
+  % Gera atributos polinomiais
+  X = atributos_polinomiais(X, 2);
+  
+	% Adiciona coluna de vies  
 	X = [ones(size(X)(1),1) X];
 
 	% Inicializa theta randomicamente
@@ -41,8 +45,7 @@ function clf = regressao_logistica_treinar(X, y, opcoes)
 	  theta(1) = theta(1) - alpha * (sum((sigmoid(X * theta) - y) .* X(:,1)) / m);
        	    
     % Armazena o custo regularizado
-	  J_historico(iter) = sum(-y .* log(sigmoid(X * theta) + eps) - (1 - y) .* log(1 - sigmoid(X * theta) + eps)) / m + lambda / (2 * m) * sum(theta(2:end) .^ 2);    
-    fprintf("%f\n", J_historico(iter));
+	  J_historico(iter) = sum(-y .* log(sigmoid(X * theta) + eps) - (1 - y) .* log(1 - sigmoid(X * theta) + eps)) / m + lambda / (2 * m) * sum(theta(2:end) .^ 2);        
         
     % Verifica se convergiu e encerra metodo caso afirmativo
 	  if iter > 1 && J_historico(iter-1) == J_historico(iter)
@@ -54,4 +57,5 @@ function clf = regressao_logistica_treinar(X, y, opcoes)
   % Monta retorno
   clf.historico = J_historico;
   clf.thetas = theta;
+  clf.p = p;
 end
