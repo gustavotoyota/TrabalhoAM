@@ -14,7 +14,7 @@
 % SAIDA
 %   pred = [Ax1] predicao 0 ou 1 do rotulo das amostras x
 
-function pred = k_vizinhos_prever(x, clf)
+function pred = k_vizinhos_prever(x, clf)  
   % Le a base de vizinhos e os parametros do metodo
   vizinhos = eval("clf.vizinhos", "NaN");
   k = eval("clf.k", "NaN");

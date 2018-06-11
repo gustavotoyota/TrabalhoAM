@@ -1,14 +1,26 @@
-function [X, y] = remover_dados(X, y, threshold_colunas, threshold_linhas)
+% Remove dados que tenham muitos atributos faltantes ou todos atributos sejam iguais
+
+% ENTRADA
+%                   X = [MxN] base de dados
+%                   y = [Mx1] rotulos das amostras
+%   threshold_colunas = [1x1] porcentagem de faltantes para remocao de colunas
+%    threshold_linhas = [1x1] porcentagem de faltantes para remocao de linhas
+
+% SAIDA
+%                   X = [AxB] base de dados com colunas e linhas removidas
+%                   y = [Ax1] rotulos das amostras com linhas removidas
+%   colunas_removidas = [1xN-B] indices das colunas removidas
+
+function [X, y, colunas_removidas] = remover_dados(X, y, threshold_colunas, threshold_linhas)
   fprintf('Removendo dados.\n');
   
   % Carregar inputs
   if isempty(X)
-    load('preprocessamento/remover_outliers.mat', 'X', '-mat');
-  end
+    load('preprocessamento/treino/outputs/remover_outliers.mat', 'X', '-mat');
+  endif
   if isempty(y)
-    load('preprocessamento/converter_colunas.mat', 'y', '-mat');
-  end
-  load('preprocessamento/remover_outliers.mat', 'limites_inferiores', 'limites_superiores', '-mat');
+    load('preprocessamento/treino/outputs/converter_colunas.mat', 'y', '-mat');
+  endif
   
   % Converter threshold de porcentagem para quantidade
   num_linhas = size(X, 1);
@@ -31,13 +43,11 @@ function [X, y] = remover_dados(X, y, threshold_colunas, threshold_linhas)
     coluna = coluna(coluna >= 0);
     if all(coluna(1) == coluna)
       colunas_removidas = [colunas_removidas indice_coluna];
-    end
-  end
+    endif
+  endfor
   
-  % Remover colunas e limites de outliers
-  X(:, colunas_removidas) = [];    
-  limites_inferiores(:, colunas_removidas) = [];
-  limites_superiores(:, colunas_removidas) = [];
+  % Remover colunas
+  X(:, colunas_removidas) = [];      
   
   % Remover linhas
   fprintf('- Removendo linhas (Threshold de faltantes: %.2f%%).\n', threshold_linhas);
@@ -49,5 +59,5 @@ function [X, y] = remover_dados(X, y, threshold_colunas, threshold_linhas)
   y(linhas_removidas, :) = [];
   
   % Salvar outputs
-  save('preprocessamento/remover_dados.mat', 'X', 'y', 'colunas_removidas', 'limites_inferiores', 'limites_superiores', '-mat');
-end  
+  save('preprocessamento/treino/outputs/remover_dados.mat', 'X', 'y', 'colunas_removidas', '-mat');
+endfunction

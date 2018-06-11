@@ -19,7 +19,7 @@ function [acc, prec, rec, f1] = pontuacao_medidas_avaliacao(y, pred)
 	tp = sum((pred==1)&(y==1));
 
 	% Calcula as medidas de avaliacao
-	acc = (tp + tn)/(tp + tn + fp + fn);
+	acc = ((tp + tn)/(tp + tn + fp + fn))*100;
 	prec = tp/(tp+fp);
 	rec = tp/(tp+fn);
 	f1 = 2*((prec*rec)/(prec+rec));

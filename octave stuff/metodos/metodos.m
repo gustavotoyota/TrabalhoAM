@@ -1,4 +1,4 @@
-function metodos(X, y)
+function metodos(X, y, X_teste, y_teste)
   % Adiciona os caminhos dos arquivos
   addpath("metodos/ferramentas");
   addpath("metodos/k_vizinhos");
@@ -6,66 +6,89 @@ function metodos(X, y)
   addpath("metodos/rede_neural");
   addpath("metodos/svm");  
   addpath("metodos/scores");  
+  addpath("metodos/outputs");
   
   % Cria os folds para validacao cruzada
-  k = 2;
+  k = 5;
   [train_split, test_split] = separar_k_fold(k, y);
   
   % Define os parametros do grid_search  
   % K-vizinhos
-  params_knn.k = [7];
-  params_knn.p = [0.1];
-  params_knn.dist = [1];
+  params_k_vizinhos.k = [3 5 7 9 11];
+  params_k_vizinhos.p = [0.1 0.3 0.5];
+  params_k_vizinhos.dist = [1 2];
   
   % Regressao logistica
-  params_reg.alpha = [10];
-  params_reg.lambda = [0.1];
-  params_reg.max_iter = [1000]; 
-  params_reg.p = [0.1];
+  params_regressao_logistica.alpha = [0.01 0.1 1 10];
+  params_regressao_logistica.lambda = [0.01 0.1 1];
+  params_regressao_logistica.num_iteracoes = [1000];
   
   % Rede neural
-  params_rna.tam_hidden_layer = [100];
-  params_rna.max_iter = [1];
-  params_rna.taxa_aprendizado = [0.1];
+  params_rede_neural.tam_hidden_layer = [100];
+  params_rede_neural.max_iter = [100];
+  params_rede_neural.taxa_aprendizado = [0.01 0.1 1 10];
+  params_rede_neural.proporcao_influencias = [0.5 0.7 0.9];
+  params_rede_neural.taxa_regularizacao = [0.01 0.1 1];
   
   % SVM
-  params_svm.kernel = [0];% 1 2 3];
-  params_svm.c = [0.01];% 0.1 1 10 100]; 
-  params_svm.gamma = [0.0001];% 0.001 0.01 1 10];
+  params_svm.kernel = [0 1 2 3];
+  params_svm.c = [0.01 0.1 1 10 100]; 
+  params_svm.gamma = [0.0001 0.001 0.01 1 10];
   
   % OCC K-vizinhos
-  params_okn.classe = [1];
-  params_okn.delta = [1];
-  params_okn.dist = [2];
+  params_occ_k_vizinhos.classe = [1];
+  params_occ_k_vizinhos.delta = [0.5 0.7 1 1.25];
+  params_occ_k_vizinhos.dist = [1 2];
   
   % OCC SVM
-  params_osv.classe = [1];
-  params_osv.kernel = [0];% 1 2 3];
-  params_osv.nu = [0.25];% 0.5 0.75 1]; 
-  params_osv.gamma = [0.0001];% 0.001 0.01 1 10];
+  params_occ_svm.classe = [1];
+  params_occ_svm.kernel = [0 1 2 3];
+  params_occ_svm.nu = [0.25 0.5 0.75 1]; 
+  params_occ_svm.gamma = [0.0001 0.001 0.01 1 10];
     
-  % Chama o grid_search para cada metodo
-  %[best_params_knn, clf_knn] = grid_search(X, y, "k_vizinhos", train_split, test_split, params_knn);
-  %fprintf("Melhores parametros do K vizinhos:\n")
-  %best_params_knn,  
+  % Define os nomes dos metodos
+  metodos = {"k_vizinhos", "regressao_logistica", "rede_neural", "svm", "occ_k_vizinhos", "occ_svm"};    
   
-  %[best_params_reg, clf_reg] = grid_search(X, y, "regressao_logistica", train_split, test_split, params_reg);
-  %fprintf("Melhores parametros da regressao logistica:\n")
-  %best_params_reg,
+  % Chama o grid search para cada metodo
+  %   armazenando o resultado em best_params_metodo e clf_metodo
+  for i = 1:length(metodos)
+    % Monta a funcao
+    met = metodos{i};
+    retorno = strcat("[best_params_", met, ", clf_", met, "]");
+    chamada = strcat("grid_search(X, y, \"", met, "\", train_split, test_split, params_", met, ")");
+    funcao = strcat(retorno, " = ", chamada, ";");
+    
+    % Chama a funcao
+    eval(funcao, "NaN");
+    
+    % Exibe o resultado
+    fprintf("Melhores parametros do %s:\n", met);
+    eval(strcat("best_params_", met, ","), "NaN");
+  endfor
   
-  %[best_params_rna, clf_rna] = grid_search(X, y, "rede_neural", train_split, test_split, params_rna);
-  %fprintf("Melhores parametros da rede neural:\n")
-  %best_params_rna,  
   
-  [best_params_svm, clf_svm] = grid_search(X, y, "svm", train_split, test_split, params_svm);
-  fprintf("Melhores parametros do SVM:\n")
-  best_params_svm,  
- 
-  %[best_params_okn, clf_okn] = grid_search(X, y, "occ_k_vizinhos", train_split, test_split, params_okn);
-  %fprintf("Melhores parametros do OCC K vizinhos:\n")
-  %best_params_okn,  
+  % Realiza a previsao do teste
+  % Chama o prever teste para cada metodos
+  %   armazenando o melhor resultado  
+  melhor_pontuacao = Inf;
+  melhor_metodo = "";  
+  for i = 1:length(metodos)
+    % Monta a funcao
+    met = metodos{i};
+    retorno = strcat("pontuacao_final");
+    chamada = strcat("prever_teste(X, y, X_teste, y_teste, ", met, ", best_params_", met, ")");
+    funcao = strcat(retorno, " = ", chamada, ";");
+    
+    % Chama a funcao
+    eval(funcao, "NaN");
+    
+    % Armazena o melhor resultado
+    if pontuacao_final < melhor_pontuacao
+      melhor_pontuacao = pontuacao_final;
+      melhor_metodo = met;
+    endif
+  endfor
   
-  [best_params_osv, clf_osv] = grid_search(X, y, "occ_svm", train_split, test_split, params_osv);
-  fprintf("Melhores parametros do OCC SVM:\n")
-  best_params_osv,  
-end
+  % Exibe o resultado final de todo o algoritmo
+  fprintf("=== MELHOR METODO ===\n%s\n\n", melhor_metodo);  
+endfunction

@@ -15,7 +15,7 @@
 %       mesmos dados de opcoes
 %       vizinhos = [MxN+1] rotulos e dados dos vizinhos
 
-function clf = k_vizinhos_treinar(X, y, opcoes)
+function clf = k_vizinhos_treinar(X, y, opcoes)    
   % Le a struct opcoes preenchedo com valores padrao caso esteja vazia
   k = eval("opcoes.k", "5");
   p = eval("opcoes.p", "0.5");

@@ -8,8 +8,7 @@
 % SAIDA
 %   pred = [Mx1] previsao das amostras
 
-function pred = occ_svm_prever(x, clf) 
-  
+function pred = occ_svm_prever(x, clf)     
   % Le o modelo
   modelo = eval("clf.modelo", "NaN");  
 

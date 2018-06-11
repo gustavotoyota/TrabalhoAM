@@ -33,7 +33,7 @@ function [pontuacao, clf] = validacao_cruzada(X, y, metodo, train_split, test_sp
     if isnan(pontuacao_minima) || pontuacao_minima > pontuacao_k
       pontuacao_minima = pontuacao_k;
       clf = clf_k;
-    end       
+    end
   end
   
   % Retorna a pontuacao media

@@ -13,7 +13,7 @@
 %       mesmos dados de opcoes
 %       vizinhos = [CxN] dados dos vizinhos de unica classe
 
-function clf = occ_k_vizinhos_treinar(X, y, opcoes)
+function clf = occ_k_vizinhos_treinar(X, y, opcoes)    
   % Le a struct opcoes preenchedo com valores padrao caso esteja vazia
   classe = eval("opcoes.classe", "1");
   delta = eval("opcoes.delta", "1");

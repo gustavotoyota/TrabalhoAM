@@ -12,8 +12,7 @@
 %   clf = estrutura contendo:
 %     modelo = modelo construido pelo LibSVM
 
-function clf = svm_treinar(X, y, opcoes) 
-  
+function clf = svm_treinar(X, y, opcoes)    
   % Le a struct opcoes preenchedo com valores padrao caso esteja vazia
   kernel = eval("opcoes.kernel", "2");
   c = eval("opcoes.c", "1");

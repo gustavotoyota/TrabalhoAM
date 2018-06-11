@@ -1,10 +1,20 @@
+% Deixa as classes em uma proporcao 1:1 atraves da remocao da classe majoritaria
+
+% ENTRADA
+%   X = [MxN] base de dados
+%   y = [Mx1] rotulos das amostras
+
+% SAIDA
+%   X = [AxN] base de dados balanceada
+%   y = [Ax1] rotulos das amostras balanceadas
+
 function [X, y] = balancear_classes(X, y)
   fprintf('Balanceando classes com undersampling.\n');
   
   % Carregar inputs
-  if isempty(X)
-    load('preprocessamento/remover_dados.mat', 'X', 'y', '-mat');
-  end
+  if isempty(X) || isempty(y)
+    load('preprocessamento/treino/outputs/remover_dados.mat', 'X', 'y', '-mat');
+  endif
   
   % Captura a classe majoritaria
   majoritaria = (sum(y) >= length(y) / 2);
@@ -23,5 +33,5 @@ function [X, y] = balancear_classes(X, y)
   y(amostras_removidas) = [];
   
   % Salvar outputs
-  save('preprocessamento/balancear_classes.mat', 'X', 'y', '-mat');
-end  
+  save('preprocessamento/treino/outputs/balancear_classes.mat', 'X', 'y', '-mat');
+endfunction
