@@ -8,7 +8,7 @@
 %   X = [AxN] base de dados balanceada
 %   y = [Ax1] rotulos das amostras balanceadas
 
-function [X, y] = balancear_classes(X, y)
+function [X, y] = balancear_classes_treino(X, y)
   fprintf('Balanceando classes com undersampling.\n');
   
   % Carregar inputs

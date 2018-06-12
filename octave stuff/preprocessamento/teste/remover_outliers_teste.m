@@ -12,10 +12,8 @@ function X = remover_outliers_teste(X, limites_inferiores, limites_superiores)
   fprintf('Removendo outliers da base de teste.\n');
   
   % Carregar inputs
-  if isempty(X)
+  if isempty(X) || isempty(limites_inferiores) || isempty(limites_superiores) 
     load('preprocessamento/teste/outputs/converter_colunas.mat', 'X', '-mat');
-  endif
-  if isempty(limites_inferiores) || isempty(limites_superiores) 
     load('preprocessamento/treino/outputs/remover_outliers.mat', 'limites_inferiores', 'limites_superiores', '-mat');
   endif
   

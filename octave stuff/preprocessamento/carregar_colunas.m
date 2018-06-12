@@ -8,7 +8,7 @@
 %   colunas_texto = grade com a base de dados da maneira que esta no CSV
 
 function [colunas_texto] = carregar_colunas(arquivo_csv, tipo)
-  fprintf('Carregando colunas da base de dados.\n', i);
+  fprintf('Carregando colunas de %s da base de dados.\n', tipo);
   
   % Caracteristicas da base
   num_colunas = 171;

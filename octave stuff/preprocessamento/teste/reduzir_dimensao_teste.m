@@ -12,13 +12,9 @@ function X = reduzir_dimensao_teste(X, y, U)
   fprintf('Reduzindo dimensao atraves do PCA na base de teste.\n');
 
   % Carregar inputs
-  if isempty(X)
+  if isempty(X) || isempty(y) || isempty(U)
     load('preprocessamento/teste/outputs/normalizar_dados.mat', 'X', '-mat');
-  endif
-  if isempty(y)
     load('preprocessamento/teste/outputs/converter_colunas.mat', 'y', '-mat');
-  endif
-  if isempty(U)
     load('preprocessamento/treino/outputs/reduzir_dimensao.mat', 'U', '-mat');
   endif
   

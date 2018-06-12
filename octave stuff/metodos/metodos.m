@@ -6,7 +6,6 @@ function metodos(X, y, X_teste, y_teste)
   addpath("metodos/rede_neural");
   addpath("metodos/svm");  
   addpath("metodos/scores");  
-  addpath("metodos/outputs");
   
   % Cria os folds para validacao cruzada
   k = 5;

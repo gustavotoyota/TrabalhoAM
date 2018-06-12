@@ -11,14 +11,12 @@
 %                   y = [Ax1] rotulos das amostras com linhas removidas
 %   colunas_removidas = [1xN-B] indices das colunas removidas
 
-function [X, y, colunas_removidas] = remover_dados(X, y, threshold_colunas, threshold_linhas)
+function [X, y, colunas_removidas] = remover_dados_treino(X, y, threshold_colunas, threshold_linhas)
   fprintf('Removendo dados.\n');
   
   % Carregar inputs
-  if isempty(X)
+  if isempty(X) || isempty(y)
     load('preprocessamento/treino/outputs/remover_outliers.mat', 'X', '-mat');
-  endif
-  if isempty(y)
     load('preprocessamento/treino/outputs/converter_colunas.mat', 'y', '-mat');
   endif
   

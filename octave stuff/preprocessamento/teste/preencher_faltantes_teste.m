@@ -11,10 +11,8 @@ function X = preencher_faltantes_teste(X, medianas)
   fprintf('Preenchendo faltantes da base de testes.\n');
   
   % Carregar inputs
-  if isempty(X)
+  if isempty(X) || isempty(medianas)
     load('preprocessamento/teste/outputs/remover_dados.mat', 'X', '-mat');
-  endif
-  if isempty(medianas)
     load('preprocessamento/treino/outputs/preencher_faltantes.mat', 'medianas');
   endif
   

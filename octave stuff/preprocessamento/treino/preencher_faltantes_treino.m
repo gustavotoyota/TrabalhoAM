@@ -7,7 +7,7 @@
 %          X = [MxN] base de dados sem atributos faltantes
 %   medianas = [1xN] medianas para preenchimento
 
-function [X, medianas] = preencher_faltantes(X)
+function [X, medianas] = preencher_faltantes_treino(X)
   fprintf('Preenchendo faltantes com a mediana.\n');
   
   % Carregar inputs

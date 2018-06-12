@@ -11,10 +11,8 @@ function X = remover_dados_teste(X, colunas_removidas)
   fprintf('Removendo dados.\n');
   
   % Carregar inputs
-  if isempty(X)
+  if isempty(X) || isempty(colunas_removidas)
     load('preprocessamento/teste/outputs/remover_outliers.mat', 'X', '-mat');
-  endif
-  if isempty(colunas_removidas)
     load('preprocessamento/treino/outputs/remover_dados.mat', 'colunas_removidas', '-mat');  
   endif
     

@@ -12,10 +12,8 @@ function X = normalizar_dados_teste(X, medias, desvios_padroes)
   fprintf('Normalizando dados da base de testes.\n');
   
   % Carregar inputs
-  if isempty(X)
+  if isempty(X) || isempty(medias) || isempty(desvios_padroes)
     load('preprocessamento/teste/outputs/preencher_faltantes.mat', 'X', '-mat');
-  endif
-  if isempty(medias) || isempty(desvios_padroes)
     load('preprocessamento/treino/outputs/normalizar_dados.mat', 'medias', 'desvios_padroes', '-mat');
   endif
   

@@ -8,14 +8,12 @@
 %   X = [MxN] base de dados reduzidas
 %   U = [MxK] componentes principais para projecao
 
-function [X, U] = reduzir_dimensao(X, y)
+function [X, U] = reduzir_dimensao_treino(X, y)
   fprintf('Reduzindo dimensao atraves do PCA.\n');
 
   % Carregar inputs
-  if isempty(X)
+  if isempty(X) || isempty(y)
     load('preprocessamento/treino/outputs/normalizar_dados.mat', 'X', '-mat');
-  endif
-  if isempty(y)
     load('preprocessamento/treino/outputs/balancear_classes.mat', 'y', '-mat');
   endif
 

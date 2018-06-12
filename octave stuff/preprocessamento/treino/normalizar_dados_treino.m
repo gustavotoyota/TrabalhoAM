@@ -8,7 +8,7 @@
 %            medias = [MxN] medias para normalizacao
 %   desvios_padroes = [MxN] desvios_padroes para normalizacao
 
-function [X, medias, desvios_padroes] = normalizar_dados(X)
+function [X, medias, desvios_padroes] = normalizar_dados_treino(X)
   fprintf('Normalizando dados.\n');
   
   % Carregar inputs

@@ -14,20 +14,24 @@
 function [X, y, X_teste, y_teste] = preprocessamento(arquivo_treino, arquivo_teste)
   % Adiciona os caminhos dos arquivos
   addpath('preprocessamento/treino');
-  addpath('preprocessamento/teste');   
+  addpath('preprocessamento/teste');
+  
+  % Criar pastas de output
+  mkdir('preprocessamento/treino/outputs');
+  mkdir('preprocessamento/teste/outputs');
 
   % Realiza o preprocessamento sobre a base de treino
-  %colunas_texto = carregar_colunas(arquivo_treino, 'treino');
-  %[X, y] = converter_colunas(eval('colunas_texto', '[]'), 'treino');  
-  [X, limites_inferiores, limites_superiores] = remover_outliers(eval('X', '[]'));
-  [X, y, colunas_removidas] = remover_dados(eval('X', '[]'), eval('y', '[]'), 10, 60);  
-  [X, y] = balancear_classes(eval('X','[]'), eval('y','[]'));
-  [X, medianas] = preencher_faltantes(eval('X', '[]'));
-  [X, medias, desvios_padroes] = normalizar_dados(eval('X', '[]'));
-  [X, U] = reduzir_dimensao(eval('X', '[]'), eval('y', '[]'));
+  colunas_texto = carregar_colunas(arquivo_treino, 'treino');
+  [X, y] = converter_colunas(eval('colunas_texto', '[]'), 'treino');  
+  [X, limites_inferiores, limites_superiores] = remover_outliers_treino(eval('X', '[]'));
+  [X, y, colunas_removidas] = remover_dados_treino(eval('X', '[]'), eval('y', '[]'), 10, 60);  
+  [X, y] = balancear_classes_treino(eval('X','[]'), eval('y','[]'));
+  [X, medianas] = preencher_faltantes_treino(eval('X', '[]'));
+  [X, medias, desvios_padroes] = normalizar_dados_treino(eval('X', '[]'));
+  [X, U] = reduzir_dimensao_treino(eval('X', '[]'), eval('y', '[]'));
   
   % Prepara a base de testes
-  %colunas_texto = carregar_colunas(arquivo_teste, 'teste');
+  colunas_texto = carregar_colunas(arquivo_teste, 'teste');
   [X_teste, y_teste] = converter_colunas(eval('colunas_texto', '[]'), 'teste');
   X_teste = remover_outliers_teste(eval('X_teste', '[]'), eval('limites_inferiores', '[]'), eval('limites_superiores', '[]'));
   X_teste = remover_dados_teste(eval('X_teste', '[]'), eval('colunas_removidas', '[]'));

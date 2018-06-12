@@ -9,7 +9,7 @@
 %   limites_inferiores = [1xN] limites inferiores para considerar um outlier
 %   limites_superiores = [1xN] limites superiores para considerar um outlier
 
-function [X, limites_inferiores, limites_superiores] = remover_outliers(X)
+function [X, limites_inferiores, limites_superiores] = remover_outliers_treino(X)
   fprintf('Removendo outliers.\n');
   
   % Carregar inputs
