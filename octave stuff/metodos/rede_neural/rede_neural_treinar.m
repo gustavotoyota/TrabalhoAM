@@ -9,6 +9,7 @@
 %             taxa_aprendizado = [1x1] taxa de aprendizado
 %        proporcao_influencias = [1x1] proporcao das influencias das classes nos gradientes
 %           taxa_regularizacao = [1x1] taxa de regularizacao
+%               threshold_pred = [1x1] valor que separa as classes na previsao
 
 % SAIDA
 %   clf = estrutura contendo:
@@ -37,10 +38,11 @@ function clf = rede_neural_treinar(X, y, opcoes)
   
   % Carregar opcoes
   tam_hidden_layer = eval('opcoes.tam_hidden_layer', '100');
-  max_iter = eval('opcoes.max_iter', '1000');
+  max_iter = eval('opcoes.max_iter', '100');
   taxa_aprendizado = eval('opcoes.taxa_aprendizado', '1');
   proporcao_influencias = eval('opcoes.proporcao_influencias', '0.5');
   taxa_regularizacao = eval('opcoes.taxa_regularizacao', '0.01');
+  clf.threshold_pred = eval('opcoes.threshold_pred', '0.5');
   
   % Auxiliares
   tam_input_layer = size(X, 2);
@@ -78,7 +80,7 @@ function clf = rede_neural_treinar(X, y, opcoes)
     outputs_output_layer = sigmoid(inputs_output_layer); % Aplicar sigmoid aos inputs
     
     % Calcular custo total
-    custo_total = cross_entropy(outputs_output_layer, y)
+    custo_total = cross_entropy(outputs_output_layer, y);
     clf.historico(end + 1) = custo_total;
     
     % Backpropagation

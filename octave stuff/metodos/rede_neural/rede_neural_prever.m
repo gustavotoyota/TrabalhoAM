@@ -38,5 +38,5 @@ function pred = rede_neural_prever(x, clf)
   outputs_output_layer = sigmoid(inputs_output_layer); % Aplicar sigmoid aos inputs
   
   % Realiza a predicao
-  pred = outputs_output_layer;
+  pred = double(outputs_output_layer >= clf.threshold_pred);
 endfunction

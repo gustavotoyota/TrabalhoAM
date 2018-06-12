@@ -21,5 +21,5 @@ function X = normalizar_dados_teste(X, medias, desvios_padroes)
   X = (X - medias) ./ desvios_padroes;
   
   % Salvar outputs
-  save('preprocessamento/teste/outputs/normalizar_dados_test.mat', 'X', '-mat');
+  save('preprocessamento/teste/outputs/normalizar_dados.mat', 'X', '-mat');
 endfunction

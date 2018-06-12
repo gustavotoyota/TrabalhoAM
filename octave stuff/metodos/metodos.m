@@ -1,4 +1,9 @@
 function metodos(X, y, X_teste, y_teste)
+  % Carregar inputs
+  if isempty(X) || isempty(y) || isempty(X_teste) || isempty(y_teste)
+    load('preprocessamento/preprocessamento.mat', 'X', 'y', 'X_teste', 'y_teste', '-mat');
+  end
+  
   % Adiciona os caminhos dos arquivos
   addpath("metodos/ferramentas");
   addpath("metodos/k_vizinhos");
@@ -46,7 +51,8 @@ function metodos(X, y, X_teste, y_teste)
   params_occ_svm.gamma = [0.0001 0.001 0.01 1 10];
     
   % Define os nomes dos metodos
-  metodos = {"k_vizinhos", "regressao_logistica", "rede_neural", "svm", "occ_k_vizinhos", "occ_svm"};    
+  %metodos = {"k_vizinhos", "regressao_logistica", "rede_neural", "svm", "occ_k_vizinhos", "occ_svm"};   
+  metodos = {"rede_neural"};
   
   % Chama o grid search para cada metodo
   %   armazenando o resultado em best_params_metodo e clf_metodo
