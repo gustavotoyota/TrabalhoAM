@@ -1,9 +1,9 @@
 function pontuacao_final = prever_teste(X, y, X_teste, y_teste, metodo, params)
-  fprintf("Predizendo o teste");
+  fprintf("Predizendo o teste\n");
   
   % ========= Curvas de aprendizado =========      
   % Separa amostras positivas de negativas    
-  X_pos = X(find(y == 1);, :);
+  X_pos = X(find(y == 1), :);
   qt_pos = size(X_pos, 1);
   y_pos = ones(qt_pos, 1);
   
@@ -29,6 +29,8 @@ function pontuacao_final = prever_teste(X, y, X_teste, y_teste, metodo, params)
   total_pos = 0;
   total_neg = 0;
   while total_pos < qt_pos
+    fprintf("Passo %d/%d\n", total_pos, qt_pos);
+    
     total_pos = min(qt_pos, total_pos + passo);
     total_neg = min(qt_neg, total_neg + ratio * passo);
     
@@ -45,21 +47,22 @@ function pontuacao_final = prever_teste(X, y, X_teste, y_teste, metodo, params)
     pontuacoes_treino(i) = pontuacao_desafio(y_reduzido, pred_treino);
     pontuacoes_teste(i) = pontuacao_desafio(y_teste, pred_teste);
     qt_amostras(i) = total_pos + total_neg;
+    i += 1;
   endwhile
   
   % Gera as curvas de aprendizado
   fig = figure();
-  set(fig, "visible", "off");
+  %set(fig, "visible", "off");
   subplot(1, 2, 1)
-  plot(pontuacoes_treino, qt_amostras);
-  title("Treinamento");
-  xlabel("Pontuacao");
-  ylabel("Qt. amostras");
+  plot(qt_amostras, pontuacoes_treino);
+  title("Treinamento");  
+  xlabel("Qt. amostras");
+  ylabel("Erro");
   subplot(1, 2, 2)
-  plot(pontuacoes_teste, qt_amostras);
+  plot(qt_amostras, pontuacoes_teste);
   title("Teste");
-  xlabel("Pontuacao");
-  ylabel("Qt. amostras");
+  xlabel("Qt. amostras");
+  ylabel("Erro");  
   print(fig, strcat("metodos/outputs/curva_aprendizado_", metodo, ".jpg"), "-djpg");
   
   % ========= Medidas de desempenho =========
