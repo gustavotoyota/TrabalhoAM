@@ -23,10 +23,10 @@ function clf = regressao_logistica_treinar(X, y, opcoes)
 	sigmoid = @(z) 1 ./ (1 + exp(-z));
 
 	% Inicializa o historico da funcao custo
-	J_historico = zeros(max_iter,1);
+	J_historico = zeros(num_iteracoes,1);
 
 	% Armazena o numero de amostras
-	m = length(y);   
+	m = length(y);
 
   % Gera atributos polinomiais
   X = atributos_polinomiais(X, 2);
