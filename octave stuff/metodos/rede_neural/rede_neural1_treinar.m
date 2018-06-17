@@ -1,9 +1,9 @@
 % Metodo Rede Neural Artificial com ReLu e Sigmoid para aprender os pesos da rede
 
 % ENTRADA
-%     X = [MxN] amostras de treinamento
-%     y = [Mx1] rotulos das amostras de treinamento
-%     opcoes = estrutura contendo:
+%    X = [MxN] amostras de treinamento
+%    y = [Mx1] rotulos das amostras de treinamento
+%    opcoes = estrutura contendo:
 %             tam_hidden_layer = [1x1] numero de neuronios da camada intermediaria
 %                     max_iter = [1x1] numero de iteracoes do treinamento
 %             taxa_aprendizado = [1x1] taxa de aprendizado
@@ -17,7 +17,17 @@
 %           peso1 = [N+1xtam_hidden_layer] pesos entre camada de entrada e intermediaria
 %           peso2 = [tam_hidden_layer+1x1] pesos entra camada intermediaria e de saida
 
-function clf = rede_neural_treinar(X, y, opcoes)
+function clf = rede_neural1_treinar(X, y, opcoes)
+  % Inicializadores de pesos
+  lecun_normal = @(tam_anterior, tam_prox) randn(tam_anterior + 1, tam_prox) .* sqrt(1 / tam_anterior);
+  lecun_uniforme = @(tam_anterior, tam_prox) (rand(tam_anterior + 1, tam_prox) .* 2 - 1) .* sqrt(3 / tam_anterior);
+  
+  he_normal = @(tam_anterior, tam_prox) randn(tam_anterior + 1, tam_prox) .* sqrt(2 / tam_anterior);
+  he_uniforme = @(tam_anterior, tam_prox) (rand(tam_anterior + 1, tam_prox) .* 2 - 1) .* sqrt(6 / tam_anterior);
+  
+  glorot_normal = @(tam_anterior, tam_prox) randn(tam_anterior + 1, tam_prox) .* sqrt(2 / (tam_anterior + tam_prox));
+  glorot_uniforme = @(tam_anterior, tam_prox) (rand(tam_anterior + 1, tam_prox) .* 2 - 1) .* sqrt(6 / (tam_anterior + tam_prox));
+  
   % Funcoes de ativacao
   relu = @(inputs) max(0, inputs);
   deriv_relu = @(inputs, outputs) double(inputs > 0);
@@ -38,7 +48,7 @@ function clf = rede_neural_treinar(X, y, opcoes)
   
   % Carregar opcoes
   tam_hidden_layer = eval('opcoes.tam_hidden_layer', '100');
-  max_iter = eval('opcoes.max_iter', '100');
+  max_iter = eval('opcoes.max_iter', '1000');
   taxa_aprendizado = eval('opcoes.taxa_aprendizado', '1');
   proporcao_influencias = eval('opcoes.proporcao_influencias', '0.5');
   taxa_regularizacao = eval('opcoes.taxa_regularizacao', '0.01');
@@ -50,11 +60,8 @@ function clf = rede_neural_treinar(X, y, opcoes)
   num_amostras = size(X, 1);
   
   % Inicializar pesos com inicializacao LeCun normal (Variancia = 1 / (tam. do layer anterior))
-  % Tipo de inicializacao escolhida para manter os valores da rede proximos a distribuicao normal
-  clf.pesos1 = randn(tam_input_layer + 1, tam_hidden_layer);
-  clf.pesos2 = randn(tam_hidden_layer + 1, tam_output_layer);
-  clf.pesos1 *= sqrt(1 / tam_input_layer);
-  clf.pesos2 *= sqrt(1 / tam_hidden_layer);
+  clf.pesos1 = lecun_normal(tam_input_layer, tam_hidden_layer);
+  clf.pesos2 = lecun_normal(tam_hidden_layer, tam_output_layer);
     
   % Adicionar bias ao X
   X(:, end + 1) = 1;
@@ -69,15 +76,15 @@ function clf = rede_neural_treinar(X, y, opcoes)
   clf.historico = [];
   
   for iteracao = 1 : max_iter
-    % Feedforward
+    % Feed forward
     % - Hidden layer
     inputs_hidden_layer = X * clf.pesos1; % Multiplicar pelos pesos
-    outputs_hidden_layer = leaky_relu(inputs_hidden_layer); % Aplicar sigmoid aos inputs
+    outputs_hidden_layer = leaky_relu(inputs_hidden_layer); % Aplicar ativacao aos inputs
 
     % - Output layer
     outputs_hidden_layer_bias = [outputs_hidden_layer ones(num_amostras, 1)]; % Outputs anteriores com bias
     inputs_output_layer = outputs_hidden_layer_bias * clf.pesos2; % Multiplicar pelos pesos
-    outputs_output_layer = sigmoid(inputs_output_layer); % Aplicar sigmoid aos inputs
+    outputs_output_layer = sigmoid(inputs_output_layer); % Aplicar ativacao aos inputs
     
     % Calcular custo total
     custo_total = cross_entropy(outputs_output_layer, y);
@@ -97,8 +104,9 @@ function clf = rede_neural_treinar(X, y, opcoes)
     grad_medio_neg = grad_total_neg ./ qtd_y_neg;
     grad_medio_pos = grad_total_pos ./ qtd_y_pos;
     grad_ponderado = (1 - proporcao_influencias) .* grad_medio_neg + proporcao_influencias .* grad_medio_pos;
-    regularizacao = (clf.pesos2 .* taxa_regularizacao) ./ num_amostras;
-    grad_pesos2 = grad_ponderado + regularizacao;
+    regularizacao_total = clf.pesos2(1:end-1, :) .* taxa_regularizacao;
+    regularizacao_final = resize(regularizacao_total ./ num_amostras, size(clf.pesos2));
+    grad_pesos2 = grad_ponderado + regularizacao_final;
     
     % - Hidden layer
     % --- Calcular as derivadas parciais dos custos ate os pesos 1
@@ -113,8 +121,9 @@ function clf = rede_neural_treinar(X, y, opcoes)
     grad_medio_neg = grad_total_neg ./ qtd_y_neg;
     grad_medio_pos = grad_total_pos ./ qtd_y_pos;
     grad_ponderado = (1 - proporcao_influencias) .* grad_medio_neg + proporcao_influencias .* grad_medio_pos;
-    regularizacao = (clf.pesos1 .* taxa_regularizacao) ./ num_amostras;
-    grad_pesos1 = grad_ponderado + regularizacao;
+    regularizacao_total = clf.pesos1(1:end-1, :) .* taxa_regularizacao;
+    regularizacao_final = resize(regularizacao_total ./ num_amostras, size(clf.pesos1));
+    grad_pesos1 = grad_ponderado + regularizacao_final;
     
     % - Aplicar o negativo dos gradientes aos pesos, controlados pela taxa de aprendizado
     clf.pesos2 -= grad_pesos2 .* taxa_aprendizado;
