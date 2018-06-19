@@ -18,13 +18,18 @@ function metodos(X, y, X_teste, y_teste)
   
   % Define os parametros do grid_search  
   % K-vizinhos
-  params_k_vizinhos.k = [3 5 7 9 11];
-  params_k_vizinhos.p = [0.1 0.3 0.5];
-  params_k_vizinhos.dist = [1 2];
+  params_k_vizinhos.k = [5];
+  params_k_vizinhos.p = [0.5];
+  params_k_vizinhos.dist = [1];
+  
+  % NW K-vizinhos
+  params_nw_k_vizinhos.k = [5];
+  params_nw_k_vizinhos.dist = [1];
+  params_nw_k_vizinhos.expoente = [6];
   
   % Regressao logistica
   params_regressao_logistica.alpha = [0.01 0.1 1 10];
-  params_regressao_logistica.lambda = [0.01 0.1 1];
+  params_regressao_logistica.lambda = [0.01 0.1 1];  
   params_regressao_logistica.num_iteracoes = [1000];
   
   % Rede neural
@@ -52,7 +57,7 @@ function metodos(X, y, X_teste, y_teste)
     
   % Define os nomes dos metodos
   %metodos = {"k_vizinhos", "regressao_logistica", "rede_neural", "svm", "occ_k_vizinhos", "occ_svm"};   
-  metodos = {"rede_neural"};
+  metodos = {"k_vizinhos", "nw_k_vizinhos"};
   
   % Chama o grid search para cada metodo
   %   armazenando o resultado em best_params_metodo e clf_metodo
@@ -68,7 +73,8 @@ function metodos(X, y, X_teste, y_teste)
     
     % Exibe o resultado
     fprintf("Melhores parametros do %s:\n", met);
-    eval(strcat("best_params_", met, ","), "NaN");
+    eval(strcat("best_params_", met, ","), "NaN");    
+    eval(strcat("save(\"metodos/best_params_", met, ".mat\", \"best_params_", met, "\", \"-mat\")"), "NaN");
   endfor
   
   
@@ -81,7 +87,7 @@ function metodos(X, y, X_teste, y_teste)
     % Monta a funcao
     met = metodos{i};
     retorno = strcat("pontuacao_final");
-    chamada = strcat("prever_teste(X, y, X_teste, y_teste, ", met, ", best_params_", met, ")");
+    chamada = strcat("prever_teste(X, y, X_teste, y_teste, \"", met, "\", best_params_", met, ")");
     funcao = strcat(retorno, " = ", chamada, ";");
     
     % Chama a funcao
