@@ -1,5 +1,4 @@
 % Método Once Class Classification KNN para predizer se x pertence a classe ou nao
-%   utilizando Distancia Euclidiana
 
 % ENTRADA
 %   x = [AxN] amostras a serem rotuladas

@@ -1,5 +1,5 @@
-% Método KNN para encontrar os K vizinhos mais proximos de x dado um peso P
-%   utilizando Distancia Euclidiana
+% Método KNN para encontrar os K vizinhos mais proximos de x
+%    e dado um peso p predizer a classe de x
 
 % ENTRADA
 %   x = [AxN] amostras a serem rotuladas
@@ -40,10 +40,10 @@ function pred = k_vizinhos_prever(x, clf)
     end  
 
 	  % Captura o rotulo dos K vizinhos mais proximos
-	  [proximos, indices] = sort(distancias);
-	  vizinhos = y(indices(1:k));
+	  [distancia_vizinhos, indice_vizinhos] = sort(distancias);
+	  rotulos_vizinhos = y(indice_vizinhos(1:k));
 	  
 	  % Prediz o rotulo de x(a)
-	  pred(amostra) = sum(vizinhos)/length(vizinhos) >= p;
+	  pred(amostra) = sum(rotulos_vizinhos)/length(rotulos_vizinhos) >= p;
 	end
 end
