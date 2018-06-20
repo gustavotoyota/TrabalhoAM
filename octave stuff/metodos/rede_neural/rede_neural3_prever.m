@@ -12,21 +12,21 @@
 % SAIDA
 %    pred = [Mx1] previsao das amostras
 
-function pred = rede_neural_prever3(clf, X)
+function pred = rede_neural_prever3(x, clf)
   % Funcoes de ativacao
   leaky_relu = @(inputs) (inputs < 0) .* 0.01 .* inputs + (inputs >= 0) .* inputs;
   
   sigmoid = @(inputs) 1 ./ (1 + exp(-inputs));
   
   % Auxiliares
-  num_amostras = size(X, 1);
+  num_amostras = size(x, 1);
   
   % Adicionar bias ao X
-  X(:, end + 1) = 1;
+  x(:, end + 1) = 1;
   
   % Feed forward
   % - Hidden layer 1
-  inputs_hidden_layer1 = X * clf.pesos1; % Multiplicar pelos pesos
+  inputs_hidden_layer1 = x * clf.pesos1; % Multiplicar pelos pesos
   outputs_hidden_layer1 = leaky_relu(inputs_hidden_layer1); % Aplicar ativacao aos inputs
 
   % - Hidden layer 2
