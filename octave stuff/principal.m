@@ -19,5 +19,5 @@ load(strcat('preprocessamento/', nome, '1.mat'), 'X', 'y', 'X_teste', 'y_teste',
 metodos(eval('X', '[]'), eval('y', '[]'), eval('X_teste', '[]'), eval('y_teste', '[]'), '1');
 
 % Roda pra base 2
-load(strcat('preprocessamento/', nome, '1.mat'), 'X', 'y', 'X_teste', 'y_teste', '-mat');
+load(strcat('preprocessamento/', nome, '2.mat'), 'X', 'y', 'X_teste', 'y_teste', '-mat');
 metodos(eval('X', '[]'), eval('y', '[]'), eval('X_teste', '[]'), eval('y_teste', '[]'), '2');
