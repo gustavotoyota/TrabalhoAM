@@ -20,6 +20,5 @@ function clf = svm_treinar(X, y, opcoes)
 
   % Treina com os dados e gera um modelo
   clf.modelo = svmtrain(y, X, [sprintf("-t %d -c %f -g %f -q", kernel, c, gamma)]);  
-  c,
   
 endfunction

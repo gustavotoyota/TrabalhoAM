@@ -4,7 +4,7 @@ function [pontuacao, clf] = validacao_cruzada(X, y, metodo, train_split, test_sp
   pontuacao_minima = NaN;
 
   % Itera cada fold
-  for k = 1:size(train_split)(1)
+  for k = 1:size(train_split,1)
     %fprintf("k %d/%d\n", k, size(train_split)(1));
   
     % Monta as amostras de treino 
@@ -19,23 +19,29 @@ function [pontuacao, clf] = validacao_cruzada(X, y, metodo, train_split, test_sp
     X_teste = X(indices_teste, :);    
     y_teste = y(indices_teste, :);
     
-    % Chama a funcao de treino
+    % Chama a funcao de treino    
     clf_k = eval(strcat(metodo, "_treinar(X_treino, y_treino, opcoes)"), "NaN");
     
     % Chama a funcao de teste
     pred = eval(strcat(metodo, "_prever(X_teste, clf_k)"), "NaN");
     
+    if isnan(pred)
+      pontuacao = Inf;
+      clf = NaN;
+      return;
+    endif
+    
     % Verifica a pontuacao
     pontuacao_k = pontuacao_desafio(y_teste, pred);
-    pontuacao += pontuacao_k;
-    
+    pontuacao += pontuacao_k;       
+      
     % Armazena o theta e historico do melhor resultado
     if isnan(pontuacao_minima) || pontuacao_minima > pontuacao_k
       pontuacao_minima = pontuacao_k;
       clf = clf_k;
-    end
-  end
+    endif   
+  endfor
   
   % Retorna a pontuacao media
-  pontuacao /= size(train_split)(1);
-end
+  pontuacao /= size(train_split, 1);
+endfunction

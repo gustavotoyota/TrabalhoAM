@@ -6,9 +6,6 @@
 %   clf = estrutura contendo:
 %     vizinhos = [MxN+1] rotulos e dados dos vizinhos
 %     k = [1x1] qtde de vizinhos consultados
-%     p = [1x1] real variando em [0,1] indicando a porcentagem P que a classe 
-%             positiva precisa ocorrer para ser o resultado da classificacao.
-%             P = 0.5 indica que a que ocorrer com mais freq sera o resultado
 %    dist = [1x1] 1 ou 2 indicando distancia de manhattan ou euclidiana respectivamente
 
 % SAIDA
@@ -17,8 +14,7 @@
 function pred = k_vizinhos_prever(x, clf)  
   % Le a base de vizinhos e os parametros do metodo
   vizinhos = eval("clf.vizinhos", "NaN");
-  k = eval("clf.k", "NaN");
-  p = eval("clf.p", "NaN");
+  k = eval("clf.k", "NaN");  
   dist = eval("clf.dist", "NaN");
 
   % Separa X e y
@@ -44,6 +40,6 @@ function pred = k_vizinhos_prever(x, clf)
 	  rotulos_vizinhos = y(indice_vizinhos(1:k));
 	  
 	  % Prediz o rotulo de x(a)
-	  pred(amostra) = sum(rotulos_vizinhos)/length(rotulos_vizinhos) >= p;
+	  pred(amostra) = round(sum(rotulos_vizinhos)/length(rotulos_vizinhos));
 	end
 end

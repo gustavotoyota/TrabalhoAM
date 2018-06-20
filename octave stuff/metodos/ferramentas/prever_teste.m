@@ -1,5 +1,5 @@
-function pontuacao_final = prever_teste(X, y, X_teste, y_teste, metodo, params)
-  fprintf("Predizendo o teste\n");
+function pontuacao_final = prever_teste(X, y, X_teste, y_teste, metodo, params, basepreproc)
+  fprintf("Gerando curvas de aprendizado para metodo %s.\n", metodo);
   
   % ========= Curvas de aprendizado =========      
   % Separa amostras positivas de negativas    
@@ -19,7 +19,7 @@ function pontuacao_final = prever_teste(X, y, X_teste, y_teste, metodo, params)
   randind_neg = randperm(qt_neg);
   
   % Inicializa variaveis
-  passo = 10;
+  passo = qt_pos;
   pontuacoes_treino = zeros(1, ceil(qt_pos/passo));
   pontuacoes_teste = zeros(size(pontuacoes_treino));
   qt_amostras = zeros(size(pontuacoes_treino));
@@ -28,9 +28,7 @@ function pontuacao_final = prever_teste(X, y, X_teste, y_teste, metodo, params)
   % Realiza a predicao aumentando o treinamento em 10 amostras positivas por iteracao  
   total_pos = 0;
   total_neg = 0;
-  while total_pos < qt_pos
-    fprintf("Passo %d/%d\n", total_pos, qt_pos);
-    
+  while total_pos < qt_pos      
     total_pos = min(qt_pos, total_pos + passo);
     total_neg = min(qt_neg, total_neg + ratio * passo);
     
@@ -51,28 +49,31 @@ function pontuacao_final = prever_teste(X, y, X_teste, y_teste, metodo, params)
   endwhile
   
   % Gera as curvas de aprendizado
-  fig = figure();
+  %fig = figure();
   %set(fig, "visible", "off");
-  subplot(1, 2, 1)
-  plot(qt_amostras, pontuacoes_treino);
-  title("Treinamento");  
-  xlabel("Qt. amostras");
-  ylabel("Erro");
-  subplot(1, 2, 2)
-  plot(qt_amostras, pontuacoes_teste);
-  title("Teste");
-  xlabel("Qt. amostras");
-  ylabel("Erro");  
-  print(fig, strcat("metodos/outputs/curva_aprendizado_", metodo, ".jpg"), "-djpg");
+  %subplot(1, 2, 1)
+  %plot(qt_amostras, pontuacoes_treino);
+  %title("Treinamento");  
+  %xlabel("Qt. amostras");
+  %ylabel("Erro");
+  %subplot(1, 2, 2)
+  %plot(qt_amostras, pontuacoes_teste);
+  %title("Teste");
+  %xlabel("Qt. amostras");
+  %ylabel("Erro");  
+  %print(fig, strcat("metodos/outputs/curva_aprendizado_", metodo, ".jpg"), "-djpg");
   
-  % ========= Medidas de desempenho =========
+  % ========= Medidas de desempenho da base completa =========         
+  % Calcula medidas de desempenho
   [acc, prec, rec, f1] = pontuacao_medidas_avaliacao(y_teste, pred_teste);
+  pontuacao_final = pontuacoes_teste(end);
+  
   fprintf("Para o metodo %s foram obtidos os seguintes resultados:\n", metodo);
-  fprintf("\tDesafio: %d\n", pontuacoes_teste(end));
+  fprintf("\tDesafio: %d\n", pontuacao_final);
   fprintf("\tAcuracia: %.2f\n", acc);
   fprintf("\tPrecisao: %.4f\n", prec);
   fprintf("\tRevocacao: %.4f\n", rec);
-  fprintf("\tF-Medida: %.4f\n\n", f1);
+  fprintf("\tF-Medida: %.4f\n\n", f1);  
   
-  pontuacao_final = pontuacoes_teste(end);
+  save(strcat("metodos/outputs/", basepreproc, "_resultados_", metodo, ".mat"), "pontuacao_final", "acc", "prec", "rec", "f1", "-mat");
 endfunction

@@ -60,6 +60,6 @@ function pred = occ_k_vizinhos_prever(x, clf)
     end
 	  
 	  % Prediz o rotulo de x(a)    
-	  pred(amostra) = (distancia_teste/distancia_treino) <= delta;
+	  pred(amostra) = (distancia_teste/(distancia_treino + eps)) <= delta;
 	end
 end

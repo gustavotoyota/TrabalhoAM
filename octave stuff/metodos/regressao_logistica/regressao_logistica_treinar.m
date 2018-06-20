@@ -29,7 +29,7 @@ function clf = regressao_logistica_treinar(X, y, opcoes)
 	m = length(y);
 
   % Gera atributos polinomiais
-  X = atributos_polinomiais(X, 2);
+  %X = atributos_polinomiais(X, 2);
   
 	% Adiciona coluna de vies  
 	X = [ones(size(X,1),1) X];

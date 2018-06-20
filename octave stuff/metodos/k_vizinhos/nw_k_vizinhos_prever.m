@@ -56,8 +56,8 @@ function pred = nw_k_vizinhos_prever(x, clf)
     nw_pos = 1 / ((qt_pos/(min(qt_neg, qt_pos) + eps))^(1 / expoente) + eps);
     
     % Calcula as pontuacoes de cada classe
-    pontuacao_neg = nw_neg * sum(distancia_vizinhos .* (rotulos_vizinhos == 0));
-    pontuacao_pos = nw_pos * sum(distancia_vizinhos .* (rotulos_vizinhos == 1));
+    pontuacao_neg = nw_neg * sum(distancia_vizinhos(find(rotulos_vizinhos == 0)) .^ -1);
+    pontuacao_pos = nw_pos * sum(distancia_vizinhos(find(rotulos_vizinhos == 1)) .^ -1);
     
 	  % Prediz o rotulo de x(a)
 	  [~, pred(amostra)] = max([pontuacao_neg, pontuacao_pos]);

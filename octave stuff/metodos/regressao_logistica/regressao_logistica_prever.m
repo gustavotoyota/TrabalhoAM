@@ -17,7 +17,7 @@ function pred = regressao_logistica_prever(x, clf)
   theta = eval("clf.thetas", "NaN");   
   
   % Gera atributos polinomiais
-  x = atributos_polinomiais(x, 2);
+  %x = atributos_polinomiais(x, 2);
     
   % Calcula as predicoes  
   pred = round(sigmoid([ones(size(x)(1),1) x] * theta));

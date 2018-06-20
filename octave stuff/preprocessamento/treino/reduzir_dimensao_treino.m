@@ -26,9 +26,9 @@ function [X, U] = reduzir_dimensao_treino(X, y)
   % Captura apenas a diagonal da matriz S
   S = diag(S); 
   
-  % Define o numero de componentes K que mantenha 90% de variancia
+  % Define o numero de componentes K que mantenha 99% de variancia
   K = 1;  
-  while (sum(S(1:K))/sum(S)) < 0.9
+  while (sum(S(1:K))/sum(S)) < 0.99
     K += 1;
   endwhile
   
@@ -37,15 +37,15 @@ function [X, U] = reduzir_dimensao_treino(X, y)
   proj_3D = X * U(:, 1:3);
   
   % Gera e salva os graficos de ponto  
-  fig = figure();
-  set(fig, 'visible', 'off');
-  subplot(2, 1, 1)  
-  scatter(proj_2D(:,1), proj_2D(:,2), 5, y);
-  title('Base com 2D');
-  subplot(2, 1, 2)
-  scatter3(proj_3D(:,1), proj_3D(:,2), proj_3D(:,3), 5, y);
-  title('Base com 3D');
-  print(fig, 'preprocessamento/treino/outputs/reduzir_dimensao.jpg', '-djpg');
+  %fig = figure();
+  %set(fig, 'visible', 'off');
+  %subplot(2, 1, 1)  
+  %scatter(proj_2D(:,1), proj_2D(:,2), 5, y);
+  %title('Base com 2D');
+  %subplot(2, 1, 2)
+  %scatter3(proj_3D(:,1), proj_3D(:,2), proj_3D(:,3), 5, y);
+  %title('Base com 3D');
+  %print(fig, 'preprocessamento/treino/outputs/reduzir_dimensao.jpg', '-djpg');
   
   % Corta apenas as componentes finais
   U = U(:, 1:K);
