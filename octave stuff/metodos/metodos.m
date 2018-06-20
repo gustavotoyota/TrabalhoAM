@@ -65,14 +65,16 @@ function metodos(X, y, X_teste, y_teste, basepreproc)
   params_occ_svm.nu = [0.25 0.5 0.75 1]; 
   params_occ_svm.gamma = [0.0001 0.001 0.01 1 10];
     
+    
   % Define os nomes dos metodos
-  metodos = {"k_vizinhos", "nw_k_vizinhos", "regressao_logistica", "rede_neural2", "svm", "occ_k_vizinhos", "occ_svm"};          
+  metodos_treino = {"k_vizinhos", "nw_k_vizinhos", "regressao_logistica", "rede_neural2", "svm", "occ_k_vizinhos", "occ_svm"};             
+  metodos_teste = {"k_vizinhos", "nw_k_vizinhos", "regressao_logistica", "rede_neural2", "svm", "occ_k_vizinhos", "occ_svm"};       
   
   % Chama o grid search para cada metodo
   %   armazenando o resultado em best_params_metodo e clf_metodo
-  for i = 1:length(metodos)
+  for i = 1:length(metodos_treino)
     % Monta a funcao
-    met = metodos{i};
+    met = metodos_treino{i};
     retorno = strcat("[best_params_", met, ", clf_", met, "]");
     chamada = strcat("grid_search(X, y, \"", met, "\", train_split, test_split, params_", met, ")");
     funcao = strcat(retorno, " = ", chamada, ";");
@@ -84,19 +86,22 @@ function metodos(X, y, X_teste, y_teste, basepreproc)
     fprintf("Melhores parametros do %s:\n", met);
     eval(strcat("best_params_", met, ","), "NaN");    
     eval(strcat("save(\"metodos/outputs/", basepreproc, "_best_params_", met, ".mat\", \"best_params_", met, "\", \"-mat\")"), "NaN");
-  endfor
-  
+  endfor    
   
   % Realiza a previsao do teste
   % Chama o prever teste para cada metodos
   %   armazenando o melhor resultado  
   melhor_pontuacao = Inf;
   melhor_metodo = "";  
-  for i = 1:length(metodos)
+  for i = 1:length(metodos_teste)
+    % Le os melhores parametros
+    met = metodos_teste{i};
+    best_params = load(strcat("metodos/outputs/", basepreproc, "_best_params_", met, ".mat"), strcat("best_params_", met), "-mat");
+  
     % Monta a funcao
-    met = metodos{i};
+    met = metodos_teste{i};
     retorno = strcat("pontuacao_final");
-    chamada = strcat("prever_teste(X, y, X_teste, y_teste, \"", met, "\", best_params_", met, ", \"", basepreproc, "\")");
+    chamada = strcat("prever_teste(X, y, X_teste, y_teste, \"", met, "\", best_params, \"", basepreproc, "\")");
     funcao = strcat(retorno, " = ", chamada, ";");
     
     % Chama a funcao
